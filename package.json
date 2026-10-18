@@ -1,0 +1,22 @@
+{
+  "name": "trab1-restapi",
+  "version": "1.0.0",
+  "description": "Atividade Prática #1 - Consumo e Implementação de APIs RESTful",
+  "scripts": {
+    "mock-server": "json-server --watch ../mock-data/bd.json --port 3000 --static ../frontend",
+    "backend": "node backend/server.js",
+    "dev": "nodemon backend/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0",
+    "swagger-ui-express": "^5.0.1",
+    "swagger-jsdoc": "^6.2.8"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4",
+    "nodemon": "^3.1.7"
+  }
+}
