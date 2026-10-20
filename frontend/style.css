@@ -174,6 +174,104 @@ tbody tr:hover {
   background: #c0392b;
 }
 
+/* Cabeçalho e info da API */
+.topo {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.topo h1 {
+  margin-bottom: 0.3rem;
+}
+
+.api-info {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.api-info code {
+  background: #e3e8ee;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+/* Mensagens de feedback */
+.mensagem {
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.mensagem.sucesso {
+  background: #e8f6ee;
+  color: #1e7b45;
+  border: 1px solid #b7e1c7;
+}
+
+.mensagem.erro {
+  background: #fdecea;
+  color: #a93226;
+  border: 1px solid #f5c6c1;
+}
+
+/* Cabeçalho das secções com filtro */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+}
+
+.section-header select,
+.curso-form input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.acoes {
+  white-space: nowrap;
+}
+
+/* Secção de cursos */
+.cursos-section {
+  margin-top: 2rem;
+}
+
+.curso-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.curso-form input {
+  flex: 1;
+  min-width: 200px;
+}
+
+#btn-curso-submit {
+  background: #2980b9;
+  color: #fff;
+}
+
+#btn-curso-submit:hover {
+  background: #1f6fa0;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
 /* Responsivo */
 @media (max-width: 600px) {
   .form-row {
