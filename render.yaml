@@ -1,0 +1,21 @@
+# Blueprint do Render: cria a API (web service) e o frontend (static site) de uma vez.
+# No Render: New > Blueprint > escolher este repositório.
+# Depois de criado, definir a variável MONGO_URI no serviço da API.
+services:
+  - type: web
+    name: sir-restapi-at1
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: MONGO_URI
+        sync: false
+
+  - type: web
+    name: sir-frontend-at1
+    runtime: static
+    rootDir: frontend
+    buildCommand: ""
+    staticPublishPath: .
