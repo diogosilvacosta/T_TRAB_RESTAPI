@@ -1,4 +1,4 @@
-/* Estilos para a página */
+/* Estilos da página - responsivo (computador, tablet e telemóvel) */
 
 * {
   margin: 0;
@@ -10,11 +10,11 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #f0f2f5;
   color: #333;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .container {
-  max-width: 960px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
@@ -22,105 +22,120 @@ body {
 h1 {
   text-align: center;
   color: #1a5276;
-  margin-bottom: 2rem;
-  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.5rem, 4vw, 2.2rem); /* tamanho ajusta-se ao ecrã */
 }
 
 h2 {
   color: #2c3e50;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
-  font-size: 1.3rem;
 }
 
-/* Formulário */
-.form-section {
+/* Caixas brancas (formulário e lista) */
+.card {
   background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.form-row {
-  display: flex;
+/* ---------- Formulário ---------- */
+
+/* Grelha: tantas colunas quantas couberem (mínimo 200px cada) */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
-  flex-wrap: wrap;
 }
 
-.form-group {
-  flex: 1;
-  min-width: 180px;
-  margin-bottom: 1rem;
-}
-
-.form-group label {
+.form-group label,
+.filtro label {
   display: block;
   margin-bottom: 0.3rem;
   font-weight: 600;
   font-size: 0.9rem;
 }
 
-.form-group input,
-.form-group select {
+input,
+select {
   width: 100%;
-  padding: 0.6rem;
+  padding: 0.65rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  transition: border-color 0.2s;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+input:focus,
+select:focus {
   outline: none;
   border-color: #2980b9;
-  box-shadow: 0 0 0 2px rgba(41, 128, 185, 0.2);
+  box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.2);
 }
 
 .form-actions {
   display: flex;
   gap: 0.5rem;
-  margin-top: 0.5rem;
+  margin-top: 1.2rem;
 }
 
+/* ---------- Botões ---------- */
+
 button {
-  padding: 0.6rem 1.5rem;
+  padding: 0.65rem 1.5rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
+  color: #fff;
   transition: background 0.2s;
 }
 
-#btn-submit {
-  background: #2980b9;
-  color: #fff;
+#btn-submit { background: #2980b9; }
+#btn-submit:hover { background: #1f6fa0; }
+
+.btn-secondary { background: #95a5a6; }
+.btn-secondary:hover { background: #7f8c8d; }
+
+.btn-edit {
+  background: #f39c12;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+.btn-edit:hover { background: #d68910; }
+
+.btn-delete {
+  background: #e74c3c;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+}
+.btn-delete:hover { background: #c0392b; }
+
+/* ---------- Lista de alunos ---------- */
+
+.lista-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
 
-#btn-submit:hover {
-  background: #1f6fa0;
+.lista-topo h2 {
+  margin-bottom: 0;
 }
 
-.btn-secondary {
-  background: #95a5a6;
-  color: #fff;
+.contador {
+  color: #888;
+  font-weight: 400;
 }
 
-.btn-secondary:hover {
-  background: #7f8c8d;
-}
-
-/* Tabela */
-.table-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.table-container {
-  overflow-x: auto;
+.filtro {
+  min-width: 260px;
 }
 
 table {
@@ -129,63 +144,100 @@ table {
 }
 
 th, td {
-  padding: 0.7rem 0.8rem;
+  padding: 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 th {
   background: #1a5276;
   color: #fff;
   font-weight: 600;
-  white-space: nowrap;
 }
 
 tbody tr:hover {
   background: #f7f9fc;
 }
 
-.loading {
-  text-align: center;
-  color: #888;
-  padding: 1.5rem !important;
+.acoes {
+  white-space: nowrap;
 }
 
-.btn-edit {
-  background: #f39c12;
-  color: #fff;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.85rem;
-}
-
-.btn-edit:hover {
-  background: #d68910;
-}
-
-.btn-delete {
-  background: #e74c3c;
-  color: #fff;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.85rem;
+.acoes button + button {
   margin-left: 0.3rem;
 }
 
-.btn-delete:hover {
-  background: #c0392b;
+.loading {
+  text-align: center;
+  color: #888;
+  padding: 1.5rem;
 }
 
-/* Responsivo */
-@media (max-width: 600px) {
-  .form-row {
-    flex-direction: column;
-    gap: 0;
+/* ---------- Telemóvel (ecrãs até 700px) ---------- */
+@media (max-width: 700px) {
+  .container {
+    padding: 1rem 0.75rem;
   }
 
-  .form-group {
-    min-width: 100%;
+  .card {
+    padding: 1rem;
   }
 
-  h1 {
-    font-size: 1.5rem;
+  /* Botões do formulário ocupam a largura toda */
+  .form-actions button {
+    flex: 1;
+  }
+
+  .filtro {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* A tabela passa a "cartões": cada aluno é um bloco */
+  thead {
+    display: none;
+  }
+
+  table, tbody, tr, td {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  td {
+    border: none;
+    padding: 0.35rem 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: right;
+  }
+
+  /* Mostra o nome do campo à esquerda (vem do atributo data-label) */
+  td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #1a5276;
+    text-align: left;
+  }
+
+  .acoes {
+    justify-content: flex-end;
+    padding-top: 0.6rem;
+  }
+
+  .acoes button {
+    flex: 1;
+  }
+
+  .loading {
+    display: block;
+    text-align: center;
   }
 }
