@@ -1,182 +1,473 @@
 {
-	"info": {
-		"_postman_id": "94e5168c-bdf4-4c00-b873-26a1a9368165",
-		"name": "SIR - API Gestão de Alunos",
-		"description": "Coleção de testes CRUD para a API de gestão de alunos e cursos",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "Alunos",
-			"item": [
-				{
-					"name": "Listar alunos",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/alunos",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Obter aluno por ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/alunos/1",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos", "1"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Criar aluno",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Status 201', () => pm.response.to.have.status(201));",
-									"pm.test('Tem nome', () => { const d = pm.response.json(); pm.expect(d.nome).to.be.a('string'); });"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [{ "key": "Content-Type", "value": "application/json" }],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Maria\",\n  \"apelido\": \"Santos\",\n  \"idCurso\": 2,\n  \"anoCurricular\": 1,\n  \"idade\": 19\n}",
-							"options": { "raw": { "language": "json" } }
-						},
-						"url": {
-							"raw": "localhost:3000/alunos",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Atualizar aluno (PUT)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Status 200', () => pm.response.to.have.status(200));",
-									"pm.test('Nome atualizado', () => { const d = pm.response.json(); pm.expect(d.nome).to.equal('Maria'); });"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [{ "key": "Content-Type", "value": "application/json" }],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"nome\": \"Maria\",\n  \"apelido\": \"Santos\",\n  \"idCurso\": 2,\n  \"anoCurricular\": 2,\n  \"idade\": 20\n}",
-							"options": { "raw": { "language": "json" } }
-						},
-						"url": {
-							"raw": "localhost:3000/alunos/1",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos", "1"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Atualizar aluno (PATCH)",
-					"request": {
-						"method": "PATCH",
-						"header": [{ "key": "Content-Type", "value": "application/json" }],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"anoCurricular\": 3\n}",
-							"options": { "raw": { "language": "json" } }
-						},
-						"url": {
-							"raw": "localhost:3000/alunos/1",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos", "1"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Apagar aluno",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test('Status 200', () => pm.response.to.have.status(200));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/alunos/1",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["alunos", "1"]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Cursos",
-			"item": [
-				{
-					"name": "Listar cursos",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/cursos",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["cursos"]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Obter curso por ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "localhost:3000/cursos/1",
-							"host": ["localhost"],
-							"port": "3000",
-							"path": ["cursos", "1"]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "94e5168c-bdf4-4c00-b873-26a1a9368165",
+    "name": "SIR - API Gestão de Alunos",
+    "description": "Testes CRUD de alunos e cursos.\n\nA variável baseUrl decide a API:\n- API simulada (json-server): http://localhost:3000\n- API real local (Express): http://localhost:5000/api\n- API real no Render: https://<servico>.onrender.com/api\n\nCorrer a coleção pela ordem (Run collection): 'Listar cursos' guarda o cursoId e 'Criar aluno' guarda o alunoId usados nos pedidos seguintes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Cursos",
+      "item": [
+        {
+          "name": "Listar cursos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cursos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cursos"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const cursos = pm.response.json();",
+                  "pm.test('Devolve uma lista com cursos', () => pm.expect(cursos).to.be.an('array').that.is.not.empty);",
+                  "// Guarda o id do primeiro curso para os pedidos de alunos",
+                  "pm.collectionVariables.set('cursoId', cursos[0].id);",
+                  "pm.collectionVariables.set('cursoIdJson', JSON.stringify(cursos[0].id));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obter curso por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cursos/{{cursoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cursos",
+                "{{cursoId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Tem nomeDoCurso', () => pm.expect(pm.response.json().nomeDoCurso).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar curso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cursos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cursos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeDoCurso\": \"Engenharia Informática\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const c = pm.response.json();",
+                  "pm.test('Nome correto', () => pm.expect(c.nomeDoCurso).to.equal('Engenharia Informática'));",
+                  "pm.collectionVariables.set('novoCursoId', c.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar curso (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cursos/{{novoCursoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cursos",
+                "{{novoCursoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nomeDoCurso\": \"Engenharia Informática (PL)\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Nome atualizado', () => pm.expect(pm.response.json().nomeDoCurso).to.equal('Engenharia Informática (PL)'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Apagar curso",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cursos/{{novoCursoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "cursos",
+                "{{novoCursoId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alunos",
+      "item": [
+        {
+          "name": "Listar alunos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Devolve uma lista', () => pm.expect(pm.response.json()).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar aluno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"apelido\": \"Santos\",\n  \"idCurso\": {{cursoIdJson}},\n  \"anoCurricular\": 1,\n  \"idade\": 19\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const a = pm.response.json();",
+                  "pm.test('Tem id e nome', () => { pm.expect(a.id).to.exist; pm.expect(a.nome).to.equal('Maria'); });",
+                  "pm.collectionVariables.set('alunoId', a.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obter aluno por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('É o aluno criado', () => pm.expect(pm.response.json().apelido).to.equal('Santos'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar aluno (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Maria\",\n  \"apelido\": \"Santos\",\n  \"idCurso\": {{cursoIdJson}},\n  \"anoCurricular\": 2,\n  \"idade\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Ano atualizado', () => pm.expect(pm.response.json().anoCurricular).to.equal(2));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar aluno (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"anoCurricular\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Só o ano mudou', () => { const a = pm.response.json(); pm.expect(a.anoCurricular).to.equal(3); pm.expect(a.nome).to.equal('Maria'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Apagar aluno",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obter aluno apagado (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "cursoId",
+      "value": "1"
+    },
+    {
+      "key": "cursoIdJson",
+      "value": "1"
+    },
+    {
+      "key": "novoCursoId",
+      "value": ""
+    },
+    {
+      "key": "alunoId",
+      "value": ""
+    }
+  ]
 }
