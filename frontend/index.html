@@ -8,8 +8,14 @@
 </head>
 <body>
   <div class="container">
-    <h1>Gestão de Alunos</h1>
+    <header class="topo">
+      <h1>Gestão de Alunos</h1>
+      <p class="api-info">API: <code id="api-url"></code></p>
+    </header>
 
+    <div id="mensagem" class="mensagem" role="status" aria-live="polite" hidden></div>
+
+    <!-- ===================== ALUNOS ===================== -->
     <section class="form-section">
       <h2 id="form-title">Adicionar Aluno</h2>
       <form id="aluno-form">
@@ -38,12 +44,13 @@
               <option value="2">2º Ano</option>
               <option value="3">3º Ano</option>
               <option value="4">4º Ano</option>
+              <option value="5">5º Ano</option>
             </select>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="idade">Idade</label>
-          <input type="number" id="idade" min="16" max="99" required placeholder="Idade">
+          <div class="form-group">
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" min="16" max="99" placeholder="Idade">
+          </div>
         </div>
         <div class="form-actions">
           <button type="submit" id="btn-submit">Adicionar</button>
@@ -53,12 +60,16 @@
     </section>
 
     <section class="table-section">
-      <h2>Lista de Alunos</h2>
+      <div class="section-header">
+        <h2>Lista de Alunos</h2>
+        <select id="filtro-curso" aria-label="Filtrar por curso">
+          <option value="">Todos os cursos</option>
+        </select>
+      </div>
       <div class="table-container">
         <table id="tabela-alunos">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Nome</th>
               <th>Apelido</th>
               <th>Curso</th>
@@ -68,13 +79,39 @@
             </tr>
           </thead>
           <tbody id="tbody-alunos">
-            <tr><td colspan="7" class="loading">A carregar alunos...</td></tr>
+            <tr><td colspan="6" class="loading">A carregar alunos...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== CURSOS (opcional) ===================== -->
+    <section class="table-section cursos-section">
+      <h2>Cursos</h2>
+      <form id="curso-form" class="curso-form">
+        <input type="hidden" id="curso-id">
+        <input type="text" id="nomeDoCurso" required placeholder="Nome do curso" aria-label="Nome do curso">
+        <button type="submit" id="btn-curso-submit">Adicionar curso</button>
+        <button type="button" id="btn-curso-cancel" class="btn-secondary" hidden>Cancelar</button>
+      </form>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome do curso</th>
+              <th>Alunos</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-cursos">
+            <tr><td colspan="3" class="loading">A carregar cursos...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
   </div>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
