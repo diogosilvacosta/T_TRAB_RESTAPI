@@ -17,24 +17,25 @@ const inputIdade = document.getElementById('idade');
 const btnSubmit = document.getElementById('btn-submit');
 const btnCancel = document.getElementById('btn-cancel');
 const tbody = document.getElementById('tbody-alunos');
+const filtroCurso = document.getElementById('filtro-curso');
+const contador = document.getElementById('contador');
 
 let cursos = [];
+let alunos = [];
 
 // O JSON-server usa "id" e o MongoDB usa "_id"
 function idDe(aluno) {
   return aluno._id || aluno.id;
 }
 
-// Carregar cursos no select
+// Carregar cursos no select do formulário e no filtro
 async function carregarCursos() {
   try {
     const resp = await fetch(`${API_BASE}/cursos`);
     cursos = await resp.json();
     cursos.forEach(curso => {
-      const opt = document.createElement('option');
-      opt.value = curso.id;
-      opt.textContent = curso.nomeDoCurso;
-      selectCurso.appendChild(opt);
+      selectCurso.appendChild(new Option(curso.nomeDoCurso, curso.id));
+      filtroCurso.appendChild(new Option(curso.nomeDoCurso, curso.id));
     });
   } catch (err) {
     console.error('Erro ao carregar cursos:', err);
@@ -47,39 +48,48 @@ function nomeCurso(idCurso) {
   return curso ? curso.nomeDoCurso : 'Desconhecido';
 }
 
-// Carregar e listar alunos
+// Buscar os alunos à API (GET)
 async function carregarAlunos() {
-  tbody.innerHTML = '<tr><td colspan="7" class="loading">A carregar alunos...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="6" class="loading">A carregar alunos...</td></tr>';
   try {
     const resp = await fetch(`${API_BASE}/alunos`);
-    const alunos = await resp.json();
-
-    if (alunos.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="loading">Nenhum aluno registado.</td></tr>';
-      return;
-    }
-
-    tbody.innerHTML = '';
-    alunos.forEach(aluno => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${idDe(aluno)}</td>
-        <td>${aluno.nome}</td>
-        <td>${aluno.apelido}</td>
-        <td>${nomeCurso(aluno.idCurso)}</td>
-        <td>${aluno.anoCurricular}º</td>
-        <td>${aluno.idade ?? '-'}</td>
-        <td>
-          <button class="btn-edit" onclick="editarAluno('${idDe(aluno)}')">Editar</button>
-          <button class="btn-delete" onclick="apagarAluno('${idDe(aluno)}')">Apagar</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+    alunos = await resp.json();
+    mostrarAlunos();
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="7" class="loading">Erro ao carregar alunos.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Erro ao carregar alunos.</td></tr>';
     console.error(err);
   }
+}
+
+// Mostrar os alunos na tabela (só os do curso escolhido no filtro)
+function mostrarAlunos() {
+  const curso = filtroCurso.value;
+  const lista = curso ? alunos.filter(a => a.idCurso == curso) : alunos;
+
+  contador.textContent = `(${lista.length})`;
+
+  if (lista.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="loading">Nenhum aluno neste curso.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = '';
+  lista.forEach(aluno => {
+    const tr = document.createElement('tr');
+    // data-label é usado no telemóvel para mostrar o nome de cada campo
+    tr.innerHTML = `
+      <td data-label="Nome">${aluno.nome}</td>
+      <td data-label="Apelido">${aluno.apelido}</td>
+      <td data-label="Curso">${nomeCurso(aluno.idCurso)}</td>
+      <td data-label="Ano">${aluno.anoCurricular}º</td>
+      <td data-label="Idade">${aluno.idade ?? '-'}</td>
+      <td class="acoes">
+        <button class="btn-edit" onclick="editarAluno('${idDe(aluno)}')">Editar</button>
+        <button class="btn-delete" onclick="apagarAluno('${idDe(aluno)}')">Apagar</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 // Adicionar aluno (POST)
@@ -172,6 +182,9 @@ form.addEventListener('submit', async (e) => {
 });
 
 btnCancel.addEventListener('click', resetarForm);
+
+// Quando se muda o curso no filtro, volta a mostrar a lista
+filtroCurso.addEventListener('change', mostrarAlunos);
 
 // Iniciar
 carregarCursos().then(carregarAlunos);
