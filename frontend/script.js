@@ -50,13 +50,13 @@ function nomeCurso(idCurso) {
 
 // Buscar os alunos à API (GET)
 async function carregarAlunos() {
-  tbody.innerHTML = '<tr><td colspan="6" class="loading">A carregar alunos...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="5" class="loading">A carregar alunos...</td></tr>';
   try {
     const resp = await fetch(`${API_BASE}/alunos`);
     alunos = await resp.json();
     mostrarAlunos();
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="6" class="loading">Erro ao carregar alunos.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="loading">Erro ao carregar alunos.</td></tr>';
     console.error(err);
   }
 }
@@ -69,7 +69,7 @@ function mostrarAlunos() {
   contador.textContent = `(${lista.length})`;
 
   if (lista.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" class="loading">Nenhum aluno neste curso.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="loading">Nenhum aluno neste curso.</td></tr>';
     return;
   }
 
@@ -77,12 +77,16 @@ function mostrarAlunos() {
   lista.forEach(aluno => {
     const tr = document.createElement('tr');
     // data-label é usado no telemóvel para mostrar o nome de cada campo
+    // iniciais do aluno para o "avatar" (ex.: Joana Silva -> JS)
+    const iniciais = (aluno.nome[0] + aluno.apelido[0]).toUpperCase();
     tr.innerHTML = `
-      <td data-label="Nome">${aluno.nome}</td>
-      <td data-label="Apelido">${aluno.apelido}</td>
-      <td data-label="Curso">${nomeCurso(aluno.idCurso)}</td>
-      <td data-label="Ano">${aluno.anoCurricular}º</td>
-      <td data-label="Idade">${aluno.idade ?? '-'}</td>
+      <td class="col-aluno">
+        <span class="avatar">${iniciais}</span>
+        <span class="nome">${aluno.nome} ${aluno.apelido}</span>
+      </td>
+      <td data-label="Curso"><span class="badge curso-${aluno.idCurso}">${nomeCurso(aluno.idCurso)}</span></td>
+      <td data-label="Ano">${aluno.anoCurricular}º ano</td>
+      <td data-label="Idade">${aluno.idade ? aluno.idade + ' anos' : '-'}</td>
       <td class="acoes">
         <button class="btn-edit" onclick="editarAluno('${idDe(aluno)}')">Editar</button>
         <button class="btn-delete" onclick="apagarAluno('${idDe(aluno)}')">Apagar</button>
