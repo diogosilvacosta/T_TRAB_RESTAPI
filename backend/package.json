@@ -1,0 +1,22 @@
+{
+  "name": "trab1-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API RESTful (Express + MongoDB Atlas) - Atividade Prática #1 SIR",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "mongoose": "^8.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

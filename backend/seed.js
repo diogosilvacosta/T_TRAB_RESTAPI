@@ -1,9 +1,13 @@
-// Script para popular a base de dados inicial
-// Executar: node backend/seed.js
-require('dotenv').config();
+// Migração dos dados de mock-data/bd.json para o MongoDB Atlas
+// Executar a partir da raiz do projeto: npm run seed
+// ATENÇÃO: apaga os alunos e cursos existentes antes de inserir.
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+
 const mongoose = require('mongoose');
 const Aluno = require('./models/Aluno');
 const Curso = require('./models/Curso');
+const bd = require(path.join(__dirname, '..', 'mock-data', 'bd.json'));
 
 const seed = async () => {
   try {
@@ -12,25 +16,25 @@ const seed = async () => {
 
     await Aluno.deleteMany({});
     await Curso.deleteMany({});
-    console.log('Base de dados limpa');
+    console.log('Coleções limpas');
 
-    const cursos = await Curso.insertMany([
-      { nomeDoCurso: 'Engenharia da Computação Gráfica e Multimédia' },
-      { nomeDoCurso: 'Engenharia de Redes e Sistemas de Computadores' }
-    ]);
-    console.log(`${cursos.length} cursos criados`);
+    // Inserir cursos e guardar a correspondência id antigo (número) -> novo ObjectId
+    const mapaCursos = {};
+    for (const c of bd.cursos) {
+      const novo = await Curso.create({ nomeDoCurso: c.nomeDoCurso });
+      mapaCursos[c.id] = novo._id;
+    }
+    console.log(`${bd.cursos.length} cursos migrados`);
 
-    const alunos = await Aluno.insertMany([
-      { nome: 'Joana', apelido: 'Silva', idCurso: 1, anoCurricular: 2, idade: 21 },
-      { nome: 'Pedro', apelido: 'Costa', idCurso: 2, anoCurricular: 1, idade: 19 },
-      { nome: 'Ana', apelido: 'Ferreira', idCurso: 1, anoCurricular: 3, idade: 22 }
-    ]);
-    console.log(`${alunos.length} alunos criados`);
+    // Inserir alunos com o idCurso convertido para o ObjectId do curso
+    const alunos = bd.alunos.map(({ id, ...a }) => ({ ...a, idCurso: mapaCursos[a.idCurso] }));
+    await Aluno.insertMany(alunos);
+    console.log(`${alunos.length} alunos migrados`);
 
     await mongoose.disconnect();
-    console.log('Seed concluído!');
+    console.log('Migração concluída!');
   } catch (err) {
-    console.error('Erro no seed:', err.message);
+    console.error('Erro na migração:', err.message);
     process.exit(1);
   }
 };
