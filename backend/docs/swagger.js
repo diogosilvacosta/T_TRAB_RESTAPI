@@ -1,4 +1,5 @@
-// Documentação Swagger
+// Documentação Swagger (OpenAPI 3) - disponível em /api-docs
+const path = require('path');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -8,38 +9,64 @@ const options = {
     info: {
       title: 'API Gestão de Alunos e Cursos',
       version: '1.0.0',
-      description: 'API RESTful para gestão de alunos e cursos - Atividade Prática #1 SIR'
+      description: 'API RESTful para gestão de alunos e cursos - Atividade Prática #1 SIR (IPVC-ESTG)'
     },
-    servers: [
-      { url: 'http://localhost:5000', description: 'Desenvolvimento' },
-      { url: 'https://sir-restapi-at1.onrender.com', description: 'Produção' }
-    ],
+    // URL relativo: funciona tanto em localhost como no Render
+    servers: [{ url: '/', description: 'Servidor atual' }],
     components: {
       schemas: {
         Aluno: {
           type: 'object',
-          required: ['nome', 'apelido', 'idCurso', 'anoCurricular', 'idade'],
           properties: {
-            _id: { type: 'string', description: 'ID do aluno' },
+            id: { type: 'string', example: '6716a1f2c3b4d5e6f7a8b9c0' },
             nome: { type: 'string', example: 'Joana' },
             apelido: { type: 'string', example: 'Silva' },
-            idCurso: { type: 'number', example: 1 },
-            anoCurricular: { type: 'number', example: 2 },
-            idade: { type: 'number', example: 21 }
+            idCurso: { type: 'string', example: '6716a1f2c3b4d5e6f7a8b9c1' },
+            anoCurricular: { type: 'integer', example: 2 },
+            idade: { type: 'integer', example: 21 },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        AlunoInput: {
+          type: 'object',
+          required: ['nome', 'apelido', 'idCurso', 'anoCurricular'],
+          properties: {
+            nome: { type: 'string', example: 'Joana' },
+            apelido: { type: 'string', example: 'Silva' },
+            idCurso: { type: 'string', description: 'ID de um curso existente', example: '6716a1f2c3b4d5e6f7a8b9c1' },
+            anoCurricular: { type: 'integer', minimum: 1, maximum: 5, example: 2 },
+            idade: { type: 'integer', example: 21 }
           }
         },
         Curso: {
           type: 'object',
+          properties: {
+            id: { type: 'string', example: '6716a1f2c3b4d5e6f7a8b9c1' },
+            nomeDoCurso: { type: 'string', example: 'Engenharia da Computação Gráfica e Multimédia' },
+            createdAt: { type: 'string', format: 'date-time' },
+            updatedAt: { type: 'string', format: 'date-time' }
+          }
+        },
+        CursoInput: {
+          type: 'object',
           required: ['nomeDoCurso'],
           properties: {
-            _id: { type: 'string', description: 'ID do curso' },
-            nomeDoCurso: { type: 'string', example: 'Engenharia da Computação Gráfica e Multimédia' }
+            nomeDoCurso: { type: 'string', example: 'Engenharia Informática' }
+          }
+        },
+        Erro: {
+          type: 'object',
+          properties: {
+            error: { type: 'string', example: 'Aluno não encontrado' }
           }
         }
       }
     }
   },
-  apis: ['./backend/routes/*.js', './backend/docs/swagger.js']
+  // Caminho absoluto: funciona independentemente da pasta onde o servidor é iniciado
+  // (as barras são normalizadas para o glob funcionar também em Windows)
+  apis: [path.join(__dirname, '..', 'routes', '*.js').replace(/\\/g, '/')]
 };
 
 const specs = swaggerJsDoc(options);
