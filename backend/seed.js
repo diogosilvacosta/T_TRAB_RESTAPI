@@ -2,6 +2,7 @@
 // Executar: npm run seed
 require('dotenv').config({ path: __dirname + '/.env' });
 const mongoose = require('mongoose');
+require('dns').setServers(['8.8.8.8', '1.1.1.1']); // ver config/db.js
 const Aluno = require('./models/Aluno');
 const Curso = require('./models/Curso');
 const bd = require('../mock-data/bd.json');
