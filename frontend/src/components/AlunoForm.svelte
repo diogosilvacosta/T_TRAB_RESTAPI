@@ -44,7 +44,7 @@
       erro = 'Seleciona um ano curricular entre 1 e 4.';
       return;
     }
-    if (idade !== undefined && (!Number.isInteger(idade) || idade < 16 || idade > 99)) {
+    if (idade != null && (!Number.isInteger(idade) || idade < 16 || idade > 99)) {
       erro = 'A idade deve ser um número inteiro entre 16 e 99.';
       return;
     }
