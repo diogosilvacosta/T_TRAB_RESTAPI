@@ -1,7 +1,7 @@
 # mock-server
 
 API simulada com JSON-server, a partir de `mock-data/bd.json`.
-O JSON-server também serve o frontend como ficheiros estáticos (`--static`).
+O frontend Svelte corre separadamente com Vite.
 
 ## Como executar
 
@@ -15,7 +15,7 @@ npm install
 npm start
 ```
 
-A API fica em `http://localhost:3000` e o frontend em `http://localhost:3000`.
+A API fica em `http://localhost:3000`. Para a interface, instalar as dependências de `frontend` e executar `npm run dev` na raiz, noutro terminal. O Vite mostra o endereço do frontend, normalmente `http://127.0.0.1:5173`.
 
 ## Endpoints
 

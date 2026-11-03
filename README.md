@@ -1,5 +1,12 @@
 # Atividade Prática #1 - Consumo e Implementação de APIs RESTful
 
+Frontend de gestão de alunos em **Svelte 5 + Tailwind CSS 4**, com Vite. A API Express/MongoDB mantém o contrato original.
+
+- [Tutorial e explicação do código](docs/TUTORIAL_SVELTE_TAILWIND.md)
+- [Etapas, branches, commits e validações](docs/EVOLUCAO_SVELTE.md)
+
+A migração está na branch `feature/svelte-tailwind`. Os links de produção abaixo acompanham a branch configurada no alojamento.
+
 ## Links de Deploy
 
 - **Front-end:** https://sir-trab1-frontend.vercel.app
@@ -10,7 +17,7 @@
 
 ```
 T_TRAB_RESTAPI/
-├── frontend/       ← Interface web (HTML/CSS/JS com Fetch API)
+├── frontend/       ← Svelte + Tailwind CSS + Vite
 ├── backend/        ← API RESTful (Express + MongoDB Atlas + Mongoose MVC)
 │   ├── config/     ← Ligação à BD
 │   ├── models/     ← Modelos Mongoose (Aluno, Curso)
@@ -20,13 +27,17 @@ T_TRAB_RESTAPI/
 ├── mock-server/    ← JSON-server
 ├── mock-data/      ← Base de dados JSON (bd.json)
 ├── tests/          ← Coleção Postman
+├── docs/           ← Tutorial e evolução da migração
 └── README.md
 ```
 
 ## Como Executar
 
+Requer Node.js **22.12 ou superior**; validado com Node.js 24. Instalar as dependências na raiz e no frontend:
+
 ```bash
-npm install
+npm ci
+npm --prefix frontend ci
 ```
 
 ### API simulada (JSON-server)
@@ -36,7 +47,16 @@ npm run mock-server
 ```
 
 - API: `http://localhost:3000/alunos` e `http://localhost:3000/cursos`
-- Frontend: `http://localhost:3000` (servido pelo JSON-server com `--static`)
+
+Noutro terminal, iniciar a interface:
+
+```bash
+npm run dev
+```
+
+- Frontend: `http://127.0.0.1:5173`
+- O JSON-server disponibiliza os dados; o Vite serve e compila os componentes Svelte.
+- As operações feitas na API simulada alteram `mock-data/bd.json`.
 
 ### API real (Express + MongoDB Atlas)
 
@@ -46,6 +66,16 @@ npm run mock-server
 
 - API: `http://localhost:5000/api/alunos` e `http://localhost:5000/api/cursos`
 - Swagger: `http://localhost:5000/api-docs`
+
+Para ligar o frontend à API Express local, criar `frontend/.env.local` com:
+
+```dotenv
+VITE_API_URL=http://localhost:5000/api
+```
+
+Reiniciar o Vite depois de alterar esse ficheiro. Sem configuração, o modo de desenvolvimento usa `http://localhost:3000`; o build de produção usa a API do Render.
+
+`VITE_API_URL` é um endereço público incluído no frontend. A ligação MongoDB continua apenas no `.env` do backend.
 
 ## Endpoints
 
@@ -63,6 +93,16 @@ npm run mock-server
 Na API real os endpoints têm o prefixo `/api` (ex.: `/api/alunos`).
 
 ## Testes (Postman)
+
+Verificação do frontend, testes do cliente HTTP e compilação:
+
+```bash
+npm run check
+npm test
+npm run build
+```
+
+O build fica em `frontend/dist`. `npm run preview` permite abrir esse build; usa o endereço de API configurado no momento da compilação. Os testes automáticos usam respostas simuladas e não alteram a base de dados de produção.
 
 Importar `tests/postman-collection.json` no Postman.
 Por omissão testa o JSON-server (`baseUrl = http://localhost:3000`).
@@ -82,7 +122,10 @@ Para testar a API real, mudar `baseUrl` para `http://localhost:5000/api`.
 
 1. Importar o repositório no [Vercel](https://vercel.com)
 2. **Root Directory:** `frontend`
-3. No `frontend/script.js`, confirmar que o URL da API do Render está correto
+3. **Framework:** Vite; **Build Command:** `npm run build`; **Output Directory:** `dist`
+4. Se necessário, definir `VITE_API_URL=https://sir-restapi-at1.onrender.com/api`
+
+Estas definições também estão em `frontend/vercel.json`. O frontend não precisa de credenciais MongoDB.
 
 ## Tecnologias
 
@@ -90,4 +133,6 @@ Para testar a API real, mudar `baseUrl` para `http://localhost:5000/api`.
 - MongoDB Atlas + Mongoose
 - JSON-Server
 - Fetch API
+- Svelte 5 e Vite
+- Tailwind CSS 4
 - Swagger (swagger-jsdoc + swagger-ui-express)
