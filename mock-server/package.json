@@ -2,9 +2,9 @@
   "name": "trab1-mock-server",
   "version": "1.0.0",
   "private": true,
-  "description": "API simulada com JSON-server (serve também o frontend como recursos estáticos)",
+  "description": "API simulada com JSON-server; o frontend corre separadamente com Vite",
   "scripts": {
-    "start": "json-server --watch ../mock-data/bd.json --port 3000 --static ../frontend"
+    "start": "json-server --watch ../mock-data/bd.json --port 3000"
   },
   "devDependencies": {
     "json-server": "^0.17.4"
