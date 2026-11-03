@@ -2,6 +2,12 @@
 
 Coleção de testes Postman para a API de gestão de alunos.
 
+## Frontend Svelte
+
+Na raiz, `npm run check`, `npm test` e `npm run build` verificam os componentes, o cliente HTTP e a compilação. Instalar primeiro as dependências da raiz e de `frontend`, conforme o README principal.
+
+O registo das verificações no navegador está em [Evolução da migração](../docs/EVOLUCAO_SVELTE.md). Os testes automáticos do frontend usam respostas simuladas e não necessitam da API de produção.
+
 ## Como usar
 
 1. Abrir o Postman e importar `postman-collection.json`
