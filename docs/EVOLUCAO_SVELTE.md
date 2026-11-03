@@ -10,6 +10,7 @@ A base da migração é o commit `88d63c9` da branch `main`. O resultado é reun
 | 2 | `feature/svelte-interface` | Formulário reativo e lista responsiva, em commits separados |
 | 3 | `feature/svelte-api` | Cliente HTTP, integração do CRUD, correção da idade opcional e limpeza da interface antiga |
 | 4 | `docs/tutorial-svelte-tailwind` | Execução local, tutorial e registo da evolução |
+| Revisão | `docs/revisao-documentacao` | Índice, verificação de links e esclarecimento dos passos de execução |
 | Integração | `feature/svelte-tailwind` | Resultado reunido das quatro etapas |
 
 A branch `main` continua com a versão anterior até ser decidida a integração da migração.

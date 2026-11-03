@@ -4,6 +4,7 @@ Frontend de gestão de alunos em **Svelte 5 + Tailwind CSS 4**, com Vite. A API 
 
 - [Tutorial e explicação do código](docs/TUTORIAL_SVELTE_TAILWIND.md)
 - [Etapas, branches, commits e validações](docs/EVOLUCAO_SVELTE.md)
+- [Índice da documentação](docs/README.md)
 
 A migração está na branch `feature/svelte-tailwind`. Os links de produção abaixo acompanham a branch configurada no alojamento.
 
@@ -33,7 +34,7 @@ T_TRAB_RESTAPI/
 
 ## Como Executar
 
-Requer Node.js **22.12 ou superior**; validado com Node.js 24. Instalar as dependências na raiz e no frontend:
+Recomenda-se Node.js **24 LTS**, utilizado na validação; a série 22 é suportada a partir de **22.12**. Instalar as dependências na raiz e no frontend:
 
 ```bash
 npm ci
@@ -61,8 +62,9 @@ npm run dev
 ### API real (Express + MongoDB Atlas)
 
 1. Criar `backend/.env` com a variável `MONGO_URI` (ver `backend/.env.example`)
-2. Passar os dados do `bd.json` para o Atlas: `npm run seed`
-3. Iniciar: `npm run backend`
+2. Iniciar: `npm run backend`
+
+Para preparar uma base de dados de teste com os dados de exemplo, existe o comando opcional `npm run seed`. Esse comando apaga os alunos e os cursos da base indicada por `MONGO_URI` e volta a inseri-los a partir de `mock-data/bd.json`. Não é necessário executá-lo para usar uma base que já tem dados.
 
 - API: `http://localhost:5000/api/alunos` e `http://localhost:5000/api/cursos`
 - Swagger: `http://localhost:5000/api-docs`
@@ -92,7 +94,7 @@ Reiniciar o Vite depois de alterar esse ficheiro. Sem configuração, o modo de 
 
 Na API real os endpoints têm o prefixo `/api` (ex.: `/api/alunos`).
 
-## Testes (Postman)
+## Verificações e testes
 
 Verificação do frontend, testes do cliente HTTP e compilação:
 
@@ -103,6 +105,8 @@ npm run build
 ```
 
 O build fica em `frontend/dist`. `npm run preview` permite abrir esse build; usa o endereço de API configurado no momento da compilação. Os testes automáticos usam respostas simuladas e não alteram a base de dados de produção.
+
+### Coleção Postman
 
 Importar `tests/postman-collection.json` no Postman.
 Por omissão testa o JSON-server (`baseUrl = http://localhost:3000`).
